@@ -11,7 +11,7 @@ import {
   Megaphone,
 } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { TPO_ROUTES } from "@/Routes/TpoRout/TpoRoutes";
+import { TPO_ROUTES } from "@/Routes/tpoRout/TpoRoutes.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { logout } from "@/store/slices/authSlice";
