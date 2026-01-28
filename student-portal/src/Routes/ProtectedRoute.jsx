@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated } = useSelector((s) => s.auth);

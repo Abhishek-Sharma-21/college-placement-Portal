@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
-import { ROUTES } from "@/routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 
 const TakeAssessment = () => {
   const { id } = useParams();

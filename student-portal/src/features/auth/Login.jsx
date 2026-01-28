@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "@/routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 import TPO_ROUTES from "../../Routes/tpoRout/TpoRoutes";
 import axios from "axios";
 import {

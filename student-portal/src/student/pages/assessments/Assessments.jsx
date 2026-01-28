@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, AlertCircle, CheckCircle2 } from "lucide-react";
-import { ROUTES } from "@/routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 
 const Assessments = () => {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UserCircle } from "lucide-react";
-import { ROUTES } from "@/routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 import axios from "axios";
 import {
   fetchProfileStart,

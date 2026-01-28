@@ -28,7 +28,7 @@ import {
   updateProfileSuccess,
   updateProfileFailure,
 } from "@/store/slices/studentProfileSlice";
-import { ROUTES } from "@/routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 
 const API_URL = "http://localhost:4000/api/profile";
 

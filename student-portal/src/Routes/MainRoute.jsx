@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import StudentRoutes from "@/Routes/studentRout/StudentRoutes";
 import TpoNavigateRoutes from "@/Routes/tpoRout/TpoNavigateRoutes";
+import StudentRoutes from "./studentRout/StudentRoutes";
 
 export default function MainRoute() {
   const { isAuthenticated, user } = useSelector((s) => s.auth);
