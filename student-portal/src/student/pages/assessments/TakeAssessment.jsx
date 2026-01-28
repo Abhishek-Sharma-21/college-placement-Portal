@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,10 +55,9 @@ const TakeAssessment = () => {
   const fetchAssessment = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:4000/api/assessments/${id}/take`,
-        { withCredentials: true },
-      );
+      const response = await axios.get(`${API_URL}/assessments/${id}/take`, {
+        withCredentials: true,
+      });
       setAssessment(response.data);
       const savedData = response.data.startedAt || new Date();
       setStartedAt(savedData);
@@ -154,7 +154,7 @@ const TakeAssessment = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:4000/api/assessments/${id}/submit`,
+        `${API_URL}/assessments/${id}/submit`,
         {
           answers: answersArray,
           startedAt,

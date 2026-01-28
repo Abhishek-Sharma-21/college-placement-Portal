@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 import TPO_ROUTES from "../../Routes/tpoRout/TpoRoutes";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import {
   loginStart,
   loginSuccess,
@@ -43,19 +44,13 @@ function Login() {
 
   // --- Local UI-only state ---
 
-  // Make sure this port matches your backend server.js
-  const API_URL = "http://localhost:4000/api/auth/login";
-
   // Add this function
   const fetchProfile = async (dispatch) => {
     dispatch(fetchProfileStart());
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/profile/profile",
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await axios.get(`${API_URL}/profile/profile`, {
+        withCredentials: true,
+      });
       dispatch(fetchProfileSuccess(response.data.profile));
     } catch (error) {
       const message =
@@ -84,7 +79,7 @@ function Login() {
     try {
       // 1. Make the API call
       // 'withCredentials: true' is CRITICAL for httpOnly cookies
-      const response = await axios.post(API_URL, data, {
+      const response = await axios.post(`${API_URL}/auth/login`, data, {
         withCredentials: true,
       });
 

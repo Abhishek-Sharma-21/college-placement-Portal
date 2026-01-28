@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { Trash2, FileText, Download, Loader2 } from "lucide-react";
 
 function TpoAnnouncementsManage() {
@@ -39,7 +40,7 @@ function TpoAnnouncementsManage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("http://localhost:4000/api/announcements", {
+      const res = await axios.get(`${API_URL}/announcements`, {
         withCredentials: true,
       });
       setAnnouncements(res.data.announcements || []);
@@ -79,17 +80,18 @@ function TpoAnnouncementsManage() {
     setError(null);
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/assessments/${selectedAssessment}/pdf/passed-students`,
-        { withCredentials: true }
+        `${API_URL}/assessments/${selectedAssessment}/pdf/passed-students`,
+        { withCredentials: true },
       );
       setPdfUrl(res.data.pdfUrl);
       setPdfFileName(res.data.filename);
       setSuccess(
-        `PDF generated successfully! ${res.data.passedStudentsCount} passed students included.`
+        `PDF generated successfully! ${res.data.passedStudentsCount} passed students included.`,
       );
     } catch (e) {
       setError(
-        e.response?.data?.message || "Failed to generate PDF. Make sure students have passed the assessment."
+        e.response?.data?.message ||
+          "Failed to generate PDF. Make sure students have passed the assessment.",
       );
     } finally {
       setGeneratingPDF(false);
@@ -107,11 +109,9 @@ function TpoAnnouncementsManage() {
         payload.pdfUrl = pdfUrl;
         payload.pdfFileName = pdfFileName;
       }
-      const res = await axios.post(
-        "http://localhost:4000/api/announcements",
-        payload,
-        { withCredentials: true }
-      );
+      const res = await axios.post(`${API_URL}/announcements`, payload, {
+        withCredentials: true,
+      });
       setSuccess("Announcement created.");
       setTitle("");
       setContent("");
@@ -128,7 +128,7 @@ function TpoAnnouncementsManage() {
   const handleDelete = async (id) => {
     if (!confirm("Delete this announcement?")) return;
     try {
-      await axios.delete(`http://localhost:4000/api/announcements/${id}`, {
+      await axios.delete(`${API_URL}/announcements/${id}`, {
         withCredentials: true,
       });
       setAnnouncements(announcements.filter((a) => a._id !== id));
@@ -191,20 +191,23 @@ function TpoAnnouncementsManage() {
                     disabled={loadingAssessments || assessments.length === 0}
                   >
                     <SelectTrigger>
-                      <SelectValue 
+                      <SelectValue
                         placeholder={
                           loadingAssessments
                             ? "Loading assessments..."
                             : assessments.length === 0
-                            ? "No assessments available"
-                            : "Select an assessment"
-                        } 
+                              ? "No assessments available"
+                              : "Select an assessment"
+                        }
                       />
                     </SelectTrigger>
                     {assessments.length > 0 && (
                       <SelectContent>
                         {assessments.map((assessment) => (
-                          <SelectItem key={assessment._id} value={assessment._id}>
+                          <SelectItem
+                            key={assessment._id}
+                            value={assessment._id}
+                          >
                             {assessment.title}
                           </SelectItem>
                         ))}

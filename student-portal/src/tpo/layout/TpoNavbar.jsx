@@ -15,6 +15,7 @@ import { TPO_ROUTES } from "@/Routes/tpoRout/TpoRoutes.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { logout } from "@/store/slices/authSlice";
+import API_URL from "../../lib/api";
 
 function TPONavbar() {
   const { user } = useSelector((state) => state.auth);
@@ -23,11 +24,7 @@ function TPONavbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://localhost:4000/api/auth/logout",
-        {},
-        { withCredentials: true },
-      );
+      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
     } catch {
       // ignore network errors; proceed to clear client state
     } finally {

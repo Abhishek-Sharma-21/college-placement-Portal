@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,12 +78,9 @@ function CreateAssessment() {
   const fetchAssessments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:4000/api/assessments/my",
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`${API_URL}/assessments/my`, {
+        withCredentials: true,
+      });
       setAssessmentHistory(response.data);
     } catch (err) {
       console.error("Error fetching assessments:", err);
@@ -125,7 +123,9 @@ function CreateAssessment() {
 
   const handleQuestionChange = (questionId, field, value) => {
     setQuestions(
-      questions.map((q) => (q.id === questionId ? { ...q, [field]: value } : q))
+      questions.map((q) =>
+        q.id === questionId ? { ...q, [field]: value } : q,
+      ),
     );
   };
 
@@ -136,11 +136,11 @@ function CreateAssessment() {
           ? {
               ...q,
               options: q.options.map((opt, idx) =>
-                idx === optionIndex ? value : opt
+                idx === optionIndex ? value : opt,
               ),
             }
-          : q
-      )
+          : q,
+      ),
     );
   };
 
@@ -167,8 +167,8 @@ function CreateAssessment() {
   const addOption = (questionId) => {
     setQuestions(
       questions.map((q) =>
-        q.id === questionId ? { ...q, options: [...q.options, ""] } : q
-      )
+        q.id === questionId ? { ...q, options: [...q.options, ""] } : q,
+      ),
     );
   };
 
@@ -180,8 +180,8 @@ function CreateAssessment() {
               ...q,
               options: q.options.filter((_, idx) => idx !== optionIndex),
             }
-          : q
-      )
+          : q,
+      ),
     );
   };
 
@@ -223,21 +223,17 @@ function CreateAssessment() {
       // If editing an existing assessment, use PUT, otherwise use POST
       if (editingAssessmentId) {
         await axios.put(
-          `http://localhost:4000/api/assessments/${editingAssessmentId}`,
+          `${API_URL}/assessments/${editingAssessmentId}`,
           assessmentData,
           {
             withCredentials: true,
-          }
+          },
         );
         setSuccess("Assessment updated successfully!");
       } else {
-        await axios.post(
-          "http://localhost:4000/api/assessments",
-          assessmentData,
-          {
-            withCredentials: true,
-          }
-        );
+        await axios.post(`${API_URL}/assessments`, assessmentData, {
+          withCredentials: true,
+        });
         setSuccess("Assessment created successfully!");
       }
 
@@ -292,12 +288,9 @@ function CreateAssessment() {
 
     try {
       setLoading(true);
-      await axios.delete(
-        `http://localhost:4000/api/assessments/${assessmentId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${API_URL}/assessments/${assessmentId}`, {
+        withCredentials: true,
+      });
       setSuccess("Assessment deleted successfully!");
       // Refresh the assessment list
       await fetchAssessments();
@@ -356,7 +349,7 @@ function CreateAssessment() {
           correctAnswer: null,
           points: 1,
         },
-      ]
+      ],
     );
     setActiveTab("create");
   };
@@ -368,8 +361,8 @@ function CreateAssessment() {
     try {
       setLoadingResults(true);
       const response = await axios.get(
-        `http://localhost:4000/api/assessments/${assessmentId}/results`,
-        { withCredentials: true }
+        `${API_URL}/assessments/${assessmentId}/results`,
+        { withCredentials: true },
       );
       setResultsData(response.data);
       setViewingResultsId(assessmentId);
@@ -377,7 +370,7 @@ function CreateAssessment() {
     } catch (err) {
       console.error("Error fetching results:", err);
       setError(
-        err.response?.data?.message || "Failed to load assessment results"
+        err.response?.data?.message || "Failed to load assessment results",
       );
     } finally {
       setLoadingResults(false);
@@ -629,7 +622,7 @@ function CreateAssessment() {
                         handleQuestionChange(
                           question.id,
                           "question",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       rows="2"
@@ -671,7 +664,7 @@ function CreateAssessment() {
                           handleQuestionChange(
                             question.id,
                             "points",
-                            parseInt(e.target.value) || 1
+                            parseInt(e.target.value) || 1,
                           )
                         }
                         className="w-full"
@@ -708,7 +701,7 @@ function CreateAssessment() {
                             handleQuestionChange(
                               question.id,
                               "correctAnswer",
-                              optIndex
+                              optIndex,
                             )
                           }
                           className="w-4 h-4"
@@ -720,7 +713,7 @@ function CreateAssessment() {
                             handleOptionChange(
                               question.id,
                               optIndex,
-                              e.target.value
+                              e.target.value,
                             )
                           }
                           placeholder={`Option ${optIndex + 1}`}
@@ -763,8 +756,8 @@ function CreateAssessment() {
                     ? "Updating..."
                     : "Creating..."
                   : editingAssessmentId
-                  ? "Update Assessment"
-                  : "Create Assessment"}
+                    ? "Update Assessment"
+                    : "Create Assessment"}
               </Button>
             </div>
           </form>
@@ -990,10 +983,10 @@ function CreateAssessment() {
                             <Clock className="h-4 w-4" />
                             <span>
                               {new Date(
-                                assessment.createdAt
+                                assessment.createdAt,
                               ).toLocaleDateString()}{" "}
                               {new Date(
-                                assessment.createdAt
+                                assessment.createdAt,
                               ).toLocaleTimeString()}
                             </span>
                           </div>
@@ -1016,8 +1009,8 @@ function CreateAssessment() {
                               assessment.status === "live"
                                 ? "default"
                                 : assessment.status === "published"
-                                ? "secondary"
-                                : "outline"
+                                  ? "secondary"
+                                  : "outline"
                             }
                             className={
                               assessment.status === "live"
@@ -1048,7 +1041,7 @@ function CreateAssessment() {
                         className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                         onClick={() =>
                           fetchAssessmentResults(
-                            assessment._id || assessment.id
+                            assessment._id || assessment.id,
                           )
                         }
                       >
@@ -1067,16 +1060,16 @@ function CreateAssessment() {
                             const year = date.getFullYear();
                             const month = String(date.getMonth() + 1).padStart(
                               2,
-                              "0"
+                              "0",
                             );
                             const day = String(date.getDate()).padStart(2, "0");
                             const hours = String(date.getHours()).padStart(
                               2,
-                              "0"
+                              "0",
                             );
                             const minutes = String(date.getMinutes()).padStart(
                               2,
-                              "0"
+                              "0",
                             );
                             return `${year}-${month}-${day}T${hours}:${minutes}`;
                           };
@@ -1104,7 +1097,7 @@ function CreateAssessment() {
                                   ? q.correctAnswer
                                   : null,
                               points: q.points || 1,
-                            })) || []
+                            })) || [],
                           );
                           setActiveTab("preview");
                         }}
@@ -1125,25 +1118,25 @@ function CreateAssessment() {
                             onClick={async () => {
                               if (
                                 !confirm(
-                                  "Are you sure you want to change this assessment from live to draft? Students will no longer be able to access it."
+                                  "Are you sure you want to change this assessment from live to draft? Students will no longer be able to access it.",
                                 )
                               ) {
                                 return;
                               }
                               try {
                                 await axios.put(
-                                  `http://localhost:4000/api/assessments/${
+                                  `${API_URL}/assessments/${
                                     assessment._id || assessment.id
                                   }`,
                                   { status: "draft" },
-                                  { withCredentials: true }
+                                  { withCredentials: true },
                                 );
                                 setSuccess("Assessment changed to draft!");
                                 await fetchAssessments();
                               } catch (err) {
                                 setError(
                                   err.response?.data?.message ||
-                                    "Failed to change assessment status"
+                                    "Failed to change assessment status",
                                 );
                               }
                             }}
@@ -1160,18 +1153,18 @@ function CreateAssessment() {
                           onClick={async () => {
                             try {
                               await axios.put(
-                                `http://localhost:4000/api/assessments/${
+                                `${API_URL}/assessments/${
                                   assessment._id || assessment.id
                                 }`,
                                 { status: "live" },
-                                { withCredentials: true }
+                                { withCredentials: true },
                               );
                               setSuccess("Assessment is now live!");
                               await fetchAssessments();
                             } catch (err) {
                               setError(
                                 err.response?.data?.message ||
-                                  "Failed to make assessment live"
+                                  "Failed to make assessment live",
                               );
                             }
                           }}
@@ -1187,18 +1180,18 @@ function CreateAssessment() {
                           onClick={async () => {
                             try {
                               await axios.put(
-                                `http://localhost:4000/api/assessments/${
+                                `${API_URL}/assessments/${
                                   assessment._id || assessment.id
                                 }`,
                                 { status: "live" },
-                                { withCredentials: true }
+                                { withCredentials: true },
                               );
                               setSuccess("Assessment is now live!");
                               await fetchAssessments();
                             } catch (err) {
                               setError(
                                 err.response?.data?.message ||
-                                  "Failed to make assessment live"
+                                  "Failed to make assessment live",
                               );
                             }
                           }}
@@ -1410,7 +1403,7 @@ function CreateAssessment() {
                                 <td className="py-3 px-4 text-center text-sm text-gray-600">
                                   {result.submittedAt
                                     ? new Date(
-                                        result.submittedAt
+                                        result.submittedAt,
                                       ).toLocaleString()
                                     : "-"}
                                 </td>
@@ -1503,7 +1496,7 @@ function CreateAssessment() {
               <div className="space-y-4">
                 {resultsData.assessment.questions?.map((question, qIndex) => {
                   const answer = selectedResult.answers.find(
-                    (a) => a.questionIndex === qIndex
+                    (a) => a.questionIndex === qIndex,
                   );
                   const selectedOptionIndex = answer?.selectedAnswer;
                   const isCorrect = answer?.isCorrect || false;
@@ -1548,8 +1541,8 @@ function CreateAssessment() {
                                   isCorrectAnswer
                                     ? "border-green-500 bg-green-50"
                                     : isSelected && !isCorrectAnswer
-                                    ? "border-red-500 bg-red-50"
-                                    : "border-gray-200"
+                                      ? "border-red-500 bg-red-50"
+                                      : "border-gray-200"
                                 }`}
                               >
                                 <div className="flex items-center gap-2">

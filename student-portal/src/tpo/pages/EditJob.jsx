@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { useDispatch } from "react-redux";
 import {
   updateJobStart,
@@ -30,7 +31,7 @@ function EditJob() {
     const loadJob = async () => {
       setError(null);
       try {
-        const res = await axios.get(`http://localhost:4000/api/jobs/${id}`, {
+        const res = await axios.get(`${API_URL}/jobs/${id}`, {
           withCredentials: true,
         });
         const job = res.data;
@@ -67,13 +68,9 @@ function EditJob() {
         ...form,
         skills: form.skills.split(",").map((s) => s.trim()),
       };
-      const res = await axios.put(
-        `http://localhost:4000/api/jobs/${id}`,
-        putData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.put(`${API_URL}/jobs/${id}`, putData, {
+        withCredentials: true,
+      });
       dispatch(updateJobSuccess(res.data.job));
       setSuccess("Job updated successfully!");
       navigate("/tpo/jobs");

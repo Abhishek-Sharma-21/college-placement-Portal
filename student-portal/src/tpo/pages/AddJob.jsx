@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import API_URL from "@/lib/api";
 import {
   addJobStart,
   addJobSuccess,
@@ -34,13 +35,9 @@ function AddJob() {
         ...form,
         skills: form.skills.split(",").map((s) => s.trim()),
       };
-      const response = await axios.post(
-        "http://localhost:4000/api/jobs",
-        postData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${API_URL}/jobs`, postData, {
+        withCredentials: true,
+      });
       dispatch(addJobSuccess(response.data.job));
       setSuccess("Job posted successfully!");
       setForm({

@@ -6,6 +6,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 import axios from "axios";
+import API_URL from "@/lib/api";
 
 const JobCard = ({ job }) => {
   const [applied, setApplied] = useState(false);
@@ -16,14 +17,11 @@ const JobCard = ({ job }) => {
   useEffect(() => {
     const checkApplicationStatus = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:4000/api/applications/my",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(`${API_URL}/applications/my`, {
+          withCredentials: true,
+        });
         const hasApplied = res.data.some(
-          (application) => application.job._id === job._id
+          (application) => application.job._id === job._id,
         );
         setApplied(hasApplied);
       } catch (error) {
@@ -44,7 +42,7 @@ const JobCard = ({ job }) => {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
 
       setApplied(true);
@@ -54,7 +52,7 @@ const JobCard = ({ job }) => {
         window.open(job.applicationLink, "_blank");
       } else {
         alert(
-          "Application submitted successfully! TPO will review your application."
+          "Application submitted successfully! TPO will review your application.",
         );
       }
     } catch (error) {
@@ -118,10 +116,10 @@ const JobCard = ({ job }) => {
             applied
               ? "bg-green-600 cursor-not-allowed"
               : applying
-              ? "bg-blue-400 cursor-wait"
-              : isActive
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-gray-400 cursor-not-allowed"
+                ? "bg-blue-400 cursor-wait"
+                : isActive
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-gray-400 cursor-not-allowed"
           }`}
         >
           {applied ? "Applied" : applying ? "Applying..." : "Apply"}
@@ -133,7 +131,9 @@ const JobCard = ({ job }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
             <h3 className="text-xl font-semibold mb-4">Job Description</h3>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{job.description}</p>
+            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {job.description}
+            </p>
             <button
               onClick={() => setShowDescriptionModal(false)}
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
@@ -170,7 +170,7 @@ const RecommendedJobs = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get("http://localhost:4000/api/jobs", {
+        const res = await axios.get(`${API_URL}/jobs`, {
           withCredentials: true,
         });
         const all = res.data || [];

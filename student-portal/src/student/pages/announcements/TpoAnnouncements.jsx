@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { FileText, Download } from "lucide-react";
 import axios from "axios";
+import API_URL from "../../../lib/api";
 
 const TpoAnnouncements = () => {
   const [announcements, setAnnouncements] = useState([]);
@@ -13,7 +14,7 @@ const TpoAnnouncements = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get("http://localhost:4000/api/announcements", {
+        const res = await axios.get(`${API_URL}/announcements`, {
           withCredentials: true,
         });
         setAnnouncements(res.data.announcements || []);

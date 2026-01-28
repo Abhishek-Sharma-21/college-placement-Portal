@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import {
   fetchJobsStart,
   fetchJobsSuccess,
@@ -76,14 +77,14 @@ const RecentJobPostingCard = ({ job }) => {
     if (!confirm("Delete this job? This action cannot be undone.")) return;
     try {
       dispatch(deleteJobStart());
-      await axios.delete(`http://localhost:4000/api/jobs/${job._id}`, {
+      await axios.delete(`${API_URL}/jobs/${job._id}`, {
         withCredentials: true,
       });
       dispatch(deleteJobSuccess(job._id));
       setMenuOpen(false);
     } catch (e) {
       dispatch(
-        deleteJobFailure(e.response?.data?.message || "Failed to delete job.")
+        deleteJobFailure(e.response?.data?.message || "Failed to delete job."),
       );
     }
   };
@@ -96,17 +97,17 @@ const RecentJobPostingCard = ({ job }) => {
     try {
       dispatch(updateJobStart());
       const res = await axios.put(
-        `http://localhost:4000/api/jobs/${job._id}`,
+        `${API_URL}/jobs/${job._id}`,
         { status: nextStatus },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(updateJobSuccess(res.data.job));
       setMenuOpen(false);
     } catch (e) {
       dispatch(
         updateJobFailure(
-          e.response?.data?.message || "Failed to update status."
-        )
+          e.response?.data?.message || "Failed to update status.",
+        ),
       );
     }
   };
@@ -114,8 +115,8 @@ const RecentJobPostingCard = ({ job }) => {
   const fetchApplicationCount = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/applications/job/${job._id}/count`,
-        { withCredentials: true }
+        `${API_URL}/applications/job/${job._id}/count`,
+        { withCredentials: true },
       );
       setApplicationCount(res.data.count);
     } catch (error) {
@@ -126,10 +127,9 @@ const RecentJobPostingCard = ({ job }) => {
   const fetchApplications = async () => {
     setLoadingApplications(true);
     try {
-      const res = await axios.get(
-        `http://localhost:4000/api/applications/job/${job._id}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`${API_URL}/applications/job/${job._id}`, {
+        withCredentials: true,
+      });
       setApplications(res.data);
 
       setShowJobModal(true);
@@ -147,16 +147,15 @@ const RecentJobPostingCard = ({ job }) => {
       setUpdatingStatus(applicationId); // Show loading state
 
       await axios.put(
-        `http://localhost:4000/api/applications/${applicationId}`,
+        `${API_URL}/applications/${applicationId}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       // Refresh applications list
-      const res = await axios.get(
-        `http://localhost:4000/api/applications/job/${job._id}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`${API_URL}/applications/job/${job._id}`, {
+        withCredentials: true,
+      });
       setApplications(res.data);
 
       // Update count
@@ -184,7 +183,7 @@ const RecentJobPostingCard = ({ job }) => {
     const handleClickOutside = (event) => {
       if (openMenuId) {
         const menuElement = document.querySelector(
-          `[data-menu-id="${openMenuId}"]`
+          `[data-menu-id="${openMenuId}"]`,
         );
         if (menuElement && !menuElement.contains(event.target)) {
           setOpenMenuId(null);
@@ -436,12 +435,12 @@ const RecentJobPostingCard = ({ job }) => {
 
                       // Pagination
                       const totalPages = Math.ceil(
-                        filtered.length / itemsPerPage
+                        filtered.length / itemsPerPage,
                       );
                       const startIndex = (currentPage - 1) * itemsPerPage;
                       const paginatedApps = filtered.slice(
                         startIndex,
-                        startIndex + itemsPerPage
+                        startIndex + itemsPerPage,
                       );
 
                       return (
@@ -503,12 +502,12 @@ const RecentJobPostingCard = ({ job }) => {
                                               application.status === "accepted"
                                                 ? "default"
                                                 : application.status ===
-                                                  "rejected"
-                                                ? "destructive"
-                                                : application.status ===
-                                                  "shortlisted"
-                                                ? "secondary"
-                                                : "secondary"
+                                                    "rejected"
+                                                  ? "destructive"
+                                                  : application.status ===
+                                                      "shortlisted"
+                                                    ? "secondary"
+                                                    : "secondary"
                                             }
                                             className={
                                               application.status ===
@@ -526,7 +525,7 @@ const RecentJobPostingCard = ({ job }) => {
                                         <td className="py-3 px-4">
                                           <p className="text-xs text-muted-foreground">
                                             {new Date(
-                                              application.appliedAt
+                                              application.appliedAt,
                                             ).toLocaleDateString()}
                                           </p>
                                         </td>
@@ -553,7 +552,7 @@ const RecentJobPostingCard = ({ job }) => {
                                                     openMenuId ===
                                                       application._id
                                                       ? null
-                                                      : application._id
+                                                      : application._id,
                                                   );
                                                 }
                                               }}
@@ -574,7 +573,8 @@ const RecentJobPostingCard = ({ job }) => {
                                                     e.stopPropagation()
                                                   }
                                                 >
-                                                  {application.status === "pending" && (
+                                                  {application.status ===
+                                                    "pending" && (
                                                     <button
                                                       type="button"
                                                       className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-blue-50 text-blue-600 transition-colors disabled:opacity-50"
@@ -586,7 +586,7 @@ const RecentJobPostingCard = ({ job }) => {
                                                         e.stopPropagation();
                                                         updateApplicationStatus(
                                                           application._id,
-                                                          "shortlisted"
+                                                          "shortlisted",
                                                         );
                                                       }}
                                                     >
@@ -594,7 +594,8 @@ const RecentJobPostingCard = ({ job }) => {
                                                       Shortlist
                                                     </button>
                                                   )}
-                                                  {application.status === "shortlisted" && (
+                                                  {application.status ===
+                                                    "shortlisted" && (
                                                     <button
                                                       type="button"
                                                       className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-50 text-gray-600 transition-colors disabled:opacity-50"
@@ -606,7 +607,7 @@ const RecentJobPostingCard = ({ job }) => {
                                                         e.stopPropagation();
                                                         updateApplicationStatus(
                                                           application._id,
-                                                          "pending"
+                                                          "pending",
                                                         );
                                                       }}
                                                     >
@@ -627,7 +628,7 @@ const RecentJobPostingCard = ({ job }) => {
                                                         e.stopPropagation();
                                                         updateApplicationStatus(
                                                           application._id,
-                                                          "accepted"
+                                                          "accepted",
                                                         );
                                                       }}
                                                     >
@@ -650,7 +651,7 @@ const RecentJobPostingCard = ({ job }) => {
                                                           e.stopPropagation();
                                                           updateApplicationStatus(
                                                             application._id,
-                                                            "rejected"
+                                                            "rejected",
                                                           );
                                                         }}
                                                       >
@@ -675,7 +676,7 @@ const RecentJobPostingCard = ({ job }) => {
                                     Showing {startIndex + 1}-
                                     {Math.min(
                                       startIndex + itemsPerPage,
-                                      filtered.length
+                                      filtered.length,
                                     )}{" "}
                                     of {filtered.length} applicants
                                   </p>
@@ -685,7 +686,7 @@ const RecentJobPostingCard = ({ job }) => {
                                       size="sm"
                                       onClick={() =>
                                         setCurrentPage((prev) =>
-                                          Math.max(1, prev - 1)
+                                          Math.max(1, prev - 1),
                                         )
                                       }
                                       disabled={currentPage === 1}
@@ -700,7 +701,7 @@ const RecentJobPostingCard = ({ job }) => {
                                       size="sm"
                                       onClick={() =>
                                         setCurrentPage((prev) =>
-                                          Math.min(totalPages, prev + 1)
+                                          Math.min(totalPages, prev + 1),
                                         )
                                       }
                                       disabled={currentPage === totalPages}
@@ -749,15 +750,15 @@ function RecentJobPostings() {
     const fetchJobs = async () => {
       dispatch(fetchJobsStart());
       try {
-        const res = await axios.get("http://localhost:4000/api/jobs", {
+        const res = await axios.get(`${API_URL}/jobs`, {
           withCredentials: true,
         });
         dispatch(fetchJobsSuccess(res.data));
       } catch (e) {
         dispatch(
           fetchJobsFailure(
-            e.response?.data?.message || "Failed to fetch jobs from API"
-          )
+            e.response?.data?.message || "Failed to fetch jobs from API",
+          ),
         );
       }
     };
@@ -771,10 +772,9 @@ function RecentJobPostings() {
     setCompletedStatusFilter("all");
     setCompletedCurrentPage(1);
     try {
-      const res = await axios.get(
-        `http://localhost:4000/api/applications/job/${job._id}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`${API_URL}/applications/job/${job._id}`, {
+        withCredentials: true,
+      });
       setCompletedApplications(res.data);
       setShowCompletedModal(true);
     } catch (error) {
@@ -789,28 +789,33 @@ function RecentJobPostings() {
       setCompletedUpdatingStatus(applicationId);
 
       await axios.put(
-        `http://localhost:4000/api/applications/${applicationId}`,
+        `${API_URL}/applications/${applicationId}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       // Refresh applications list
       const res = await axios.get(
-        `http://localhost:4000/api/applications/job/${currentCompletedJob._id}`,
-        { withCredentials: true }
+        `${API_URL}/applications/job/${currentCompletedJob._id}`,
+        { withCredentials: true },
       );
       setCompletedApplications(res.data);
 
       // Update completed stats
       if (completedStats) {
-        const updatedStats = completedStats.map(stat => {
+        const updatedStats = completedStats.map((stat) => {
           if (stat.jobId === currentCompletedJob._id) {
             return {
               ...stat,
-              accepted: res.data.filter(app => app.status === "accepted").length,
-              shortlisted: res.data.filter(app => app.status === "shortlisted").length,
-              rejected: res.data.filter(app => app.status === "rejected").length,
-              pending: res.data.filter(app => app.status === "pending").length,
+              accepted: res.data.filter((app) => app.status === "accepted")
+                .length,
+              shortlisted: res.data.filter(
+                (app) => app.status === "shortlisted",
+              ).length,
+              rejected: res.data.filter((app) => app.status === "rejected")
+                .length,
+              pending: res.data.filter((app) => app.status === "pending")
+                .length,
             };
           }
           return stat;
@@ -842,7 +847,7 @@ function RecentJobPostings() {
     const handleClickOutside = (event) => {
       if (completedOpenMenuId) {
         const menuElement = document.querySelector(
-          `[data-menu-id="${completedOpenMenuId}"]`
+          `[data-menu-id="${completedOpenMenuId}"]`,
         );
         if (menuElement && !menuElement.contains(event.target)) {
           setCompletedOpenMenuId(null);
@@ -876,7 +881,7 @@ function RecentJobPostings() {
               try {
                 const res = await axios.get(
                   `http://localhost:4000/api/applications/job/${job._id}`,
-                  { withCredentials: true }
+                  { withCredentials: true },
                 );
                 const applications = res.data;
                 return {
@@ -884,16 +889,16 @@ function RecentJobPostings() {
                   jobTitle: job.title,
                   total: applications.length,
                   accepted: applications.filter(
-                    (app) => app.status === "accepted"
+                    (app) => app.status === "accepted",
                   ).length,
                   shortlisted: applications.filter(
-                    (app) => app.status === "shortlisted"
+                    (app) => app.status === "shortlisted",
                   ).length,
                   rejected: applications.filter(
-                    (app) => app.status === "rejected"
+                    (app) => app.status === "rejected",
                   ).length,
                   pending: applications.filter(
-                    (app) => app.status === "pending"
+                    (app) => app.status === "pending",
                   ).length,
                 };
               } catch {
@@ -1037,7 +1042,11 @@ function RecentJobPostings() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => openCompletedApplicationsModal(completedJobs.find(j => j._id === stat.jobId))}
+                          onClick={() =>
+                            openCompletedApplicationsModal(
+                              completedJobs.find((j) => j._id === stat.jobId),
+                            )
+                          }
                         >
                           <Eye className="h-4 w-4 mr-2" />
                           View Applications
@@ -1058,11 +1067,15 @@ function RecentJobPostings() {
           <Card className="max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <CardHeader className="flex items-center justify-between border-b sticky top-0 bg-white z-10">
               <div className="flex-1">
-                <CardTitle className="text-2xl mb-2">{currentCompletedJob.title}</CardTitle>
+                <CardTitle className="text-2xl mb-2">
+                  {currentCompletedJob.title}
+                </CardTitle>
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Briefcase className="h-4 w-4" />
-                    <span className="font-medium">{currentCompletedJob.company}</span>
+                    <span className="font-medium">
+                      {currentCompletedJob.company}
+                    </span>
                   </div>
                   {currentCompletedJob.location && (
                     <div className="flex items-center gap-2">
@@ -1080,17 +1093,16 @@ function RecentJobPostings() {
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
                       <span>
-                        Deadline: {new Date(currentCompletedJob.deadline).toLocaleDateString()}
+                        Deadline:{" "}
+                        {new Date(
+                          currentCompletedJob.deadline,
+                        ).toLocaleDateString()}
                       </span>
                     </div>
                   )}
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={closeCompletedModal}
-              >
+              <Button variant="ghost" size="icon" onClick={closeCompletedModal}>
                 <X className="h-4 w-4" />
               </Button>
             </CardHeader>
@@ -1108,20 +1120,25 @@ function RecentJobPostings() {
               )}
 
               {/* Skills */}
-              {currentCompletedJob.skills && currentCompletedJob.skills.length > 0 && (
-                <div className="mb-6 pb-6 border-b">
-                  <h3 className="font-semibold text-lg mb-3">
-                    Required Skills
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {currentCompletedJob.skills.map((skill, index) => (
-                      <Badge key={index} variant="outline" className="text-sm">
-                        {skill}
-                      </Badge>
-                    ))}
+              {currentCompletedJob.skills &&
+                currentCompletedJob.skills.length > 0 && (
+                  <div className="mb-6 pb-6 border-b">
+                    <h3 className="font-semibold text-lg mb-3">
+                      Required Skills
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {currentCompletedJob.skills.map((skill, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-sm"
+                        >
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Applicants Section */}
               <div className="mt-6">
@@ -1188,18 +1205,17 @@ function RecentJobPostings() {
                             ?.toLowerCase()
                             .includes(completedSearchQuery.toLowerCase());
                         const matchesStatus =
-                          completedStatusFilter === "all" || app.status === completedStatusFilter;
+                          completedStatusFilter === "all" ||
+                          app.status === completedStatusFilter;
                         return matchesSearch && matchesStatus;
                       });
 
                       // Pagination
-                      const totalPages = Math.ceil(
-                        filtered.length / 10
-                      );
+                      const totalPages = Math.ceil(filtered.length / 10);
                       const startIndex = (completedCurrentPage - 1) * 10;
                       const paginatedApps = filtered.slice(
                         startIndex,
-                        startIndex + 10
+                        startIndex + 10,
                       );
 
                       return (
@@ -1261,12 +1277,12 @@ function RecentJobPostings() {
                                               application.status === "accepted"
                                                 ? "default"
                                                 : application.status ===
-                                                  "rejected"
-                                                ? "destructive"
-                                                : application.status ===
-                                                  "shortlisted"
-                                                ? "secondary"
-                                                : "secondary"
+                                                    "rejected"
+                                                  ? "destructive"
+                                                  : application.status ===
+                                                      "shortlisted"
+                                                    ? "secondary"
+                                                    : "secondary"
                                             }
                                             className={
                                               application.status ===
@@ -1284,7 +1300,7 @@ function RecentJobPostings() {
                                         <td className="py-3 px-4">
                                           <p className="text-xs text-muted-foreground">
                                             {new Date(
-                                              application.appliedAt
+                                              application.appliedAt,
                                             ).toLocaleDateString()}
                                           </p>
                                         </td>
@@ -1311,11 +1327,11 @@ function RecentJobPostings() {
                                                     completedOpenMenuId ===
                                                       application._id
                                                       ? null
-                                                      : application._id
-                              );
-                            }
-                          }}
-                        >
+                                                      : application._id,
+                                                  );
+                                                }
+                                              }}
+                                            >
                                               {completedUpdatingStatus ===
                                               application._id ? (
                                                 <div className="h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
@@ -1323,7 +1339,8 @@ function RecentJobPostings() {
                                                 <MoreVertical className="h-4 w-4" />
                                               )}
                                             </button>
-                                            {completedOpenMenuId === application._id &&
+                                            {completedOpenMenuId ===
+                                              application._id &&
                                               completedUpdatingStatus !==
                                                 application._id && (
                                                 <div
@@ -1332,7 +1349,8 @@ function RecentJobPostings() {
                                                     e.stopPropagation()
                                                   }
                                                 >
-                                                  {application.status === "pending" && (
+                                                  {application.status ===
+                                                    "pending" && (
                                                     <button
                                                       type="button"
                                                       className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-blue-50 text-blue-600 transition-colors disabled:opacity-50"
@@ -1344,7 +1362,7 @@ function RecentJobPostings() {
                                                         e.stopPropagation();
                                                         updateCompletedApplicationStatus(
                                                           application._id,
-                                                          "shortlisted"
+                                                          "shortlisted",
                                                         );
                                                       }}
                                                     >
@@ -1352,7 +1370,8 @@ function RecentJobPostings() {
                                                       Shortlist
                                                     </button>
                                                   )}
-                                                  {application.status === "shortlisted" && (
+                                                  {application.status ===
+                                                    "shortlisted" && (
                                                     <button
                                                       type="button"
                                                       className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-50 text-gray-600 transition-colors disabled:opacity-50"
@@ -1364,7 +1383,7 @@ function RecentJobPostings() {
                                                         e.stopPropagation();
                                                         updateCompletedApplicationStatus(
                                                           application._id,
-                                                          "pending"
+                                                          "pending",
                                                         );
                                                       }}
                                                     >
@@ -1385,7 +1404,7 @@ function RecentJobPostings() {
                                                         e.stopPropagation();
                                                         updateCompletedApplicationStatus(
                                                           application._id,
-                                                          "accepted"
+                                                          "accepted",
                                                         );
                                                       }}
                                                     >
@@ -1393,7 +1412,10 @@ function RecentJobPostings() {
                                                       Accept
                                                     </button>
                                                   )}
-                                                  {application.status === "pending" || application.status === "shortlisted" ? (
+                                                  {application.status ===
+                                                    "pending" ||
+                                                  application.status ===
+                                                    "shortlisted" ? (
                                                     <button
                                                       type="button"
                                                       className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-red-50 text-red-600 transition-colors disabled:opacity-50"
@@ -1405,7 +1427,7 @@ function RecentJobPostings() {
                                                         e.stopPropagation();
                                                         updateCompletedApplicationStatus(
                                                           application._id,
-                                                          "rejected"
+                                                          "rejected",
                                                         );
                                                       }}
                                                     >
@@ -1428,10 +1450,7 @@ function RecentJobPostings() {
                                 <div className="flex items-center justify-between mt-4 pt-4 border-t">
                                   <p className="text-xs text-muted-foreground">
                                     Showing {startIndex + 1}-
-                                    {Math.min(
-                                      startIndex + 10,
-                                      filtered.length
-                                    )}{" "}
+                                    {Math.min(startIndex + 10, filtered.length)}{" "}
                                     of {filtered.length} applicants
                                   </p>
                                   <div className="flex items-center gap-2">
@@ -1440,7 +1459,7 @@ function RecentJobPostings() {
                                       size="sm"
                                       onClick={() =>
                                         setCompletedCurrentPage((prev) =>
-                                          Math.max(1, prev - 1)
+                                          Math.max(1, prev - 1),
                                         )
                                       }
                                       disabled={completedCurrentPage === 1}
@@ -1448,33 +1467,36 @@ function RecentJobPostings() {
                                       <ChevronLeft className="h-4 w-4" />
                                     </Button>
                                     <span className="text-sm text-muted-foreground">
-                                      Page {completedCurrentPage} of {totalPages}
+                                      Page {completedCurrentPage} of{" "}
+                                      {totalPages}
                                     </span>
                                     <Button
                                       variant="outline"
                                       size="sm"
                                       onClick={() =>
                                         setCompletedCurrentPage((prev) =>
-                                          Math.min(totalPages, prev + 1)
+                                          Math.min(totalPages, prev + 1),
                                         )
                                       }
-                                      disabled={completedCurrentPage === totalPages}
+                                      disabled={
+                                        completedCurrentPage === totalPages
+                                      }
                                     >
                                       <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
+                                    </Button>
+                                  </div>
+                                </div>
                               )}
                             </>
                           )}
                         </>
-                  );
+                      );
                     })()}
                   </>
-            )}
+                )}
               </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

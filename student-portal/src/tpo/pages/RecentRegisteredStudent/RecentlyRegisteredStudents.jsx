@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TPO_ROUTES } from "@/Routes/tpoRout/TpoRoutes.jsx";
+import API_URL from "../../../lib/api";
 
 const StudentCard = ({ student, onViewDetails }) => (
   <div className="border rounded-lg p-4 flex items-center justify-between">
@@ -50,7 +51,7 @@ function RecentlyRegisteredStudents() {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get("http://localhost:4000/api/students", {
+        const res = await axios.get(`${API_URL}/students`, {
           withCredentials: true,
         });
         setStudents(res.data.profiles || []);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import {
   FaBuilding,
   FaMapMarkerAlt,
@@ -78,7 +79,8 @@ const ApplicationCard = ({ application }) => {
               <FaMapMarkerAlt /> {job.location || "Not specified"}
             </span>
             <span className="flex items-center gap-1.5">
-              <FaMoneyBillWave /> {job.ctc ? `₹${job.ctc} LPA` : "Not Disclosed"}
+              <FaMoneyBillWave />{" "}
+              {job.ctc ? `₹${job.ctc} LPA` : "Not Disclosed"}
             </span>
             <span className="flex items-center gap-1.5">
               <FaClock /> Deadline:{" "}
@@ -99,7 +101,8 @@ const ApplicationCard = ({ application }) => {
                 </p>
                 {application.notes && (
                   <p className="text-gray-600 mt-1">
-                    <span className="font-medium">Notes:</span> {application.notes}
+                    <span className="font-medium">Notes:</span>{" "}
+                    {application.notes}
                   </p>
                 )}
               </div>
@@ -139,7 +142,9 @@ const ApplicationCard = ({ application }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
             <h3 className="text-xl font-semibold mb-4">Job Description</h3>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{job.description}</p>
+            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {job.description}
+            </p>
             <button
               onClick={() => setShowDescriptionModal(false)}
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
@@ -180,7 +185,7 @@ const MyJobs = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("http://localhost:4000/api/applications/my", {
+      const res = await axios.get(`${API_URL}/applications/my`, {
         withCredentials: true,
       });
       setApplications(res.data);
@@ -210,7 +215,9 @@ const MyJobs = () => {
   return (
     <div className="w-full">
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900">My Job Applications</h2>
+        <h2 className="text-3xl font-bold text-gray-900">
+          My Job Applications
+        </h2>
         <p className="text-md text-gray-600 mt-1">
           Track and manage all your job applications
         </p>
@@ -242,7 +249,9 @@ const MyJobs = () => {
 
       {/* Loading State */}
       {loading && (
-        <div className="text-center py-12 text-gray-500">Loading applications...</div>
+        <div className="text-center py-12 text-gray-500">
+          Loading applications...
+        </div>
       )}
 
       {/* Error State */}
@@ -329,4 +338,3 @@ const MyJobs = () => {
 };
 
 export default MyJobs;
-

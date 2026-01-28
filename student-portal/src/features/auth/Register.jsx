@@ -22,6 +22,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 // You will need axios to make the API call
 import axios from "axios";
+import API_URL from "../../lib/api";
 
 function Register() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function Register() {
     setError(null); // Clear previous errors
 
     let data;
-    let url = "http://localhost:4000/api/auth/register"; // Your backend URL
+    let url = `${API_URL}/auth/register`; // Your backend URL
 
     if (activeTab === "student") {
       // --- Student Data ---

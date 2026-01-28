@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,10 +21,9 @@ const Assessments = () => {
   const fetchAssessments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:4000/api/assessments/live",
-        { withCredentials: true },
-      );
+      const response = await axios.get(`${API_URL}/assessments/live`, {
+        withCredentials: true,
+      });
       setAssessments(response.data);
     } catch (err) {
       console.error("Error fetching assessments:", err);

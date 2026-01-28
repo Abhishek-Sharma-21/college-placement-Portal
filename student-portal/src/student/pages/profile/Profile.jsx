@@ -29,8 +29,7 @@ import {
   updateProfileFailure,
 } from "@/store/slices/studentProfileSlice";
 import { ROUTES } from "@/Routes/studentRout/routes.jsx";
-
-const API_URL = "http://localhost:4000/api/profile";
+import API_URL from "@/lib/api";
 
 function ProfileCompletionForm() {
   const dispatch = useDispatch();
@@ -56,7 +55,7 @@ function ProfileCompletionForm() {
     const fetchProfile = async () => {
       dispatch(fetchProfileStart());
       try {
-        const response = await axios.get(`${API_URL}/profile`, {
+        const response = await axios.get(`${API_URL}/profile/profile`, {
           withCredentials: true,
         });
         dispatch(fetchProfileSuccess(response.data.profile));
@@ -140,7 +139,7 @@ function ProfileCompletionForm() {
     }
 
     try {
-      const response = await axios.put(`${API_URL}/profile`, formData, {
+      const response = await axios.put(`${API_URL}/profile/profile`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

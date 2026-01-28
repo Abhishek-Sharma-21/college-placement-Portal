@@ -8,6 +8,7 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import axios from "axios";
+import API_URL from "@/lib/api";
 
 const SkillTag = ({ skill }) => (
   <span className="bg-gray-200 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-full">
@@ -23,12 +24,9 @@ const JobCard = ({ job }) => {
   useEffect(() => {
     const checkApplicationStatus = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:4000/api/applications/my",
-          {
-            withCredentials: true,
-          },
-        );
+        const res = await axios.get(`${API_URL}/applications/my`, {
+          withCredentials: true,
+        });
         const hasApplied = res.data.some(
           (application) => application.job._id === job._id,
         );
@@ -47,7 +45,7 @@ const JobCard = ({ job }) => {
     try {
       // Submit application to backend
       await axios.post(
-        `http://localhost:4000/api/applications/job/${job._id}`,
+        `${API_URL}/applications/job/${job._id}`,
         {},
         {
           withCredentials: true,
@@ -159,7 +157,7 @@ const AllJobs = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get("http://localhost:4000/api/jobs", {
+        const res = await axios.get(`${API_URL}/jobs`, {
           withCredentials: true,
         });
         const all = res.data || [];

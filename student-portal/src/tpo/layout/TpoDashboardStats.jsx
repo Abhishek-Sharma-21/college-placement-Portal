@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Briefcase, Building, TrendingUp } from "lucide-react";
 import axios from "axios";
+import API_URL from "@/lib/api";
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor }) => (
   <Card className="shadow-sm">
@@ -31,10 +32,10 @@ function TPODashboardStats() {
       setError(null);
       try {
         const [studentsRes, jobsRes] = await Promise.all([
-          axios.get("http://localhost:4000/api/students", {
+          axios.get(`${API_URL}/students`, {
             withCredentials: true,
           }),
-          axios.get("http://localhost:4000/api/jobs", {
+          axios.get(`${API_URL}/jobs`, {
             withCredentials: true,
           }),
         ]);
@@ -44,11 +45,11 @@ function TPODashboardStats() {
         setActiveJobs(jobs.filter((j) => j.status === "active").length);
         setCompletedJobs(jobs.filter((j) => j.status === "completed").length);
         setPlacementsThisYear(
-          jobs.filter((j) => j.status === "completed").length
+          jobs.filter((j) => j.status === "completed").length,
         );
       } catch (e) {
         setError(
-          e.response?.data?.message || "Failed to load dashboard stats."
+          e.response?.data?.message || "Failed to load dashboard stats.",
         );
       } finally {
         setLoading(false);
