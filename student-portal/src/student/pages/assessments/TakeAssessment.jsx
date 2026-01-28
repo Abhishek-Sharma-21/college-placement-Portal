@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 
 const TakeAssessment = () => {
   const { id } = useParams();
@@ -25,18 +25,19 @@ const TakeAssessment = () => {
 
   useEffect(() => {
     fetchAssessment();
-    
+
     // Prevent accidental navigation
     const handleBeforeUnload = (e) => {
       if (!submitted && !submitting) {
         e.preventDefault();
-        e.returnValue = "You have an assessment in progress. Are you sure you want to leave?";
+        e.returnValue =
+          "You have an assessment in progress. Are you sure you want to leave?";
         return e.returnValue;
       }
     };
-    
+
     window.addEventListener("beforeunload", handleBeforeUnload);
-    
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (autoSaveRef.current) clearInterval(autoSaveRef.current);
@@ -55,12 +56,12 @@ const TakeAssessment = () => {
       setLoading(true);
       const response = await axios.get(
         `http://localhost:4000/api/assessments/${id}/take`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setAssessment(response.data);
       const savedData = response.data.startedAt || new Date();
       setStartedAt(savedData);
-      
+
       // Load saved answers from localStorage if available
       const savedAnswers = localStorage.getItem(`assessment_${id}_answers`);
       if (savedAnswers) {
@@ -76,7 +77,7 @@ const TakeAssessment = () => {
           console.error("Error parsing saved answers:", e);
         }
       }
-      
+
       // Calculate time left based on duration and elapsed time
       const durationInSeconds = response.data.duration * 60;
       const elapsed = savedData
@@ -102,9 +103,7 @@ const TakeAssessment = () => {
       }, 30000);
     } catch (err) {
       console.error("Error fetching assessment:", err);
-      setError(
-        err.response?.data?.message || "Failed to load assessment"
-      );
+      setError(err.response?.data?.message || "Failed to load assessment");
     } finally {
       setLoading(false);
     }
@@ -114,7 +113,7 @@ const TakeAssessment = () => {
     if (Object.keys(answers).length > 0) {
       localStorage.setItem(
         `assessment_${id}_answers`,
-        JSON.stringify({ answers, startedAt })
+        JSON.stringify({ answers, startedAt }),
       );
     }
   };
@@ -133,7 +132,7 @@ const TakeAssessment = () => {
 
     try {
       setSubmitting(true);
-      
+
       // Clear timers
       if (timerRef.current) clearInterval(timerRef.current);
       if (autoSaveRef.current) clearInterval(autoSaveRef.current);
@@ -161,19 +160,17 @@ const TakeAssessment = () => {
           startedAt,
           autoSubmitted,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       setResult(response.data.result);
       setSubmitted(true);
-      
+
       // Clear local storage
       localStorage.removeItem(`assessment_${id}_answers`);
     } catch (err) {
       console.error("Error submitting assessment:", err);
-      setError(
-        err.response?.data?.message || "Failed to submit assessment"
-      );
+      setError(err.response?.data?.message || "Failed to submit assessment");
     } finally {
       setSubmitting(false);
     }
@@ -311,8 +308,8 @@ const TakeAssessment = () => {
               timeLeft < 60
                 ? "border-red-500 bg-red-50"
                 : timeLeft < 300
-                ? "border-orange-500 bg-orange-50"
-                : "border-blue-500 bg-blue-50"
+                  ? "border-orange-500 bg-orange-50"
+                  : "border-blue-500 bg-blue-50"
             }`}
           >
             <Clock className={`h-5 w-5 ${getTimeColor()}`} />
@@ -360,8 +357,8 @@ const TakeAssessment = () => {
                       currentQuestion === index
                         ? "bg-blue-600 text-white"
                         : answers[index] !== undefined
-                        ? "bg-green-100 text-green-700 hover:bg-green-200"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          ? "bg-green-100 text-green-700 hover:bg-green-200"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                   >
                     {index + 1}
@@ -428,7 +425,7 @@ const TakeAssessment = () => {
                     <Button
                       onClick={() =>
                         setCurrentQuestion(
-                          Math.min(totalQuestions - 1, currentQuestion + 1)
+                          Math.min(totalQuestions - 1, currentQuestion + 1),
                         )
                       }
                     >
@@ -466,4 +463,3 @@ const TakeAssessment = () => {
 };
 
 export default TakeAssessment;
-

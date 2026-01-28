@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, AlertCircle, CheckCircle2 } from "lucide-react";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 
 const Assessments = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Assessments = () => {
       setLoading(true);
       const response = await axios.get(
         "http://localhost:4000/api/assessments/live",
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setAssessments(response.data);
     } catch (err) {
@@ -35,14 +35,23 @@ const Assessments = () => {
 
   const isWithinTimeFrame = (assessment) => {
     const now = new Date();
-    const startDate = assessment.startDate ? new Date(assessment.startDate) : null;
+    const startDate = assessment.startDate
+      ? new Date(assessment.startDate)
+      : null;
     const endDate = assessment.endDate ? new Date(assessment.endDate) : null;
 
     if (startDate && now < startDate) {
-      return { valid: false, message: "Test will be available starting " + startDate.toLocaleString() };
+      return {
+        valid: false,
+        message:
+          "Test will be available starting " + startDate.toLocaleString(),
+      };
     }
     if (endDate && now > endDate) {
-      return { valid: false, message: "Test has ended on " + endDate.toLocaleString() };
+      return {
+        valid: false,
+        message: "Test has ended on " + endDate.toLocaleString(),
+      };
     }
     return { valid: true };
   };
@@ -50,7 +59,9 @@ const Assessments = () => {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="text-center py-12 text-gray-500">Loading assessments...</div>
+        <div className="text-center py-12 text-gray-500">
+          Loading assessments...
+        </div>
       </div>
     );
   }
@@ -83,12 +94,18 @@ const Assessments = () => {
         <div className="space-y-4">
           {assessments.map((assessment) => {
             const timeCheck = isWithinTimeFrame(assessment);
-            const now = new Date();
-            const startDate = assessment.startDate ? new Date(assessment.startDate) : null;
-            const endDate = assessment.endDate ? new Date(assessment.endDate) : null;
+            const startDate = assessment.startDate
+              ? new Date(assessment.startDate)
+              : null;
+            const endDate = assessment.endDate
+              ? new Date(assessment.endDate)
+              : null;
 
             return (
-              <Card key={assessment._id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={assessment._id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -121,7 +138,9 @@ const Assessments = () => {
                       {startDate && endDate && (
                         <div className="mt-3 text-sm text-gray-600">
                           <p>
-                            <strong>Available:</strong> {startDate.toLocaleString()} - {endDate.toLocaleString()}
+                            <strong>Available:</strong>{" "}
+                            {startDate.toLocaleString()} -{" "}
+                            {endDate.toLocaleString()}
                           </p>
                         </div>
                       )}
@@ -138,7 +157,8 @@ const Assessments = () => {
                             {timeCheck.message}
                           </p>
                           <p className="text-xs text-yellow-700 mt-1">
-                            Test must be live in the time frame that TPO mentioned while creating assessment.
+                            Test must be live in the time frame that TPO
+                            mentioned while creating assessment.
                           </p>
                         </div>
                       </div>
@@ -147,11 +167,15 @@ const Assessments = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-green-600">
                         <CheckCircle2 className="h-5 w-5" />
-                        <span className="text-sm font-medium">Available Now</span>
+                        <span className="text-sm font-medium">
+                          Available Now
+                        </span>
                       </div>
                       <Button
                         onClick={() => {
-                          navigate(`${ROUTES.ASSESSMENTS}/${assessment._id}/take`);
+                          navigate(
+                            `${ROUTES.ASSESSMENTS}/${assessment._id}/take`,
+                          );
                         }}
                       >
                         Start Assessment
@@ -160,7 +184,9 @@ const Assessments = () => {
                   )}
                   {assessment.instructions && (
                     <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm font-semibold mb-1">Instructions:</p>
+                      <p className="text-sm font-semibold mb-1">
+                        Instructions:
+                      </p>
                       <p className="text-sm text-gray-700 whitespace-pre-line">
                         {assessment.instructions}
                       </p>
@@ -177,4 +203,3 @@ const Assessments = () => {
 };
 
 export default Assessments;
-

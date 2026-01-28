@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UserCircle } from "lucide-react";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 import axios from "axios";
 import {
   fetchProfileStart,
@@ -15,7 +15,7 @@ const StudentWelcomeBanner = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { profile, isProfileComplete } = useSelector(
-    (state) => state.studentProfile
+    (state) => state.studentProfile,
   );
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const StudentWelcomeBanner = () => {
             "http://localhost:4000/api/profile/profile",
             {
               withCredentials: true,
-            }
+            },
           );
           dispatch(fetchProfileSuccess(response.data.profile));
         } catch (err) {

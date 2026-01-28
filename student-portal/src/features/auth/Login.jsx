@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 import TPO_ROUTES from "../../Routes/tpoRout/TpoRoutes";
 import axios from "axios";
 import {
@@ -54,7 +54,7 @@ function Login() {
         "http://localhost:4000/api/profile/profile",
         {
           withCredentials: true,
-        }
+        },
       );
       dispatch(fetchProfileSuccess(response.data.profile));
     } catch (error) {
@@ -94,7 +94,7 @@ function Login() {
         loginSuccess({
           user: response.data, // {_id, fullName, email, role}
           token: null, // httpOnly cookie set by backend
-        })
+        }),
       );
 
       // 3. Fetch the profile right after login!

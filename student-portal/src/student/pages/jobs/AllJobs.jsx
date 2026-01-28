@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 import {
   FaBuilding,
   FaMapMarkerAlt,
@@ -27,10 +27,10 @@ const JobCard = ({ job }) => {
           "http://localhost:4000/api/applications/my",
           {
             withCredentials: true,
-          }
+          },
         );
         const hasApplied = res.data.some(
-          (application) => application.job._id === job._id
+          (application) => application.job._id === job._id,
         );
         setApplied(hasApplied);
       } catch (error) {
@@ -51,7 +51,7 @@ const JobCard = ({ job }) => {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
 
       setApplied(true);
@@ -61,7 +61,7 @@ const JobCard = ({ job }) => {
         window.open(job.applicationLink, "_blank");
       } else {
         alert(
-          "Application submitted successfully! TPO will review your application."
+          "Application submitted successfully! TPO will review your application.",
         );
       }
     } catch (error) {
@@ -136,10 +136,10 @@ const JobCard = ({ job }) => {
             applied
               ? "bg-green-600 cursor-not-allowed"
               : applying
-              ? "bg-blue-400 cursor-wait"
-              : job.status === "active"
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-gray-400 cursor-not-allowed"
+                ? "bg-blue-400 cursor-wait"
+                : job.status === "active"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-gray-400 cursor-not-allowed"
           }`}
         >
           {applied ? "Applied" : applying ? "Applying..." : "Apply"}

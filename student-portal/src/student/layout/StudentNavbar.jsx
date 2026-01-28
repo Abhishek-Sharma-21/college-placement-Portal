@@ -14,7 +14,7 @@ import {
   FaFolderOpen,
   FaClipboardList,
 } from "react-icons/fa";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 
 const navItems = [
   { name: "Dashboard", icon: <FaThLarge />, to: ROUTES.DASHBOARD },
@@ -39,7 +39,7 @@ export default function StudentNavbar() {
       await axios.post(
         "http://localhost:4000/api/auth/logout",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
     } catch {
       // ignore network errors; proceed to clear client state

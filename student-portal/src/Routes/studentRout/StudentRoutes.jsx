@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "@/student/layout/AppLayout";
-import { ROUTES } from "@/Routes/studentRout/routes.jsx";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 import ProtectedRoute from "@/Routes/ProtectedRoute";
 
 const DashboardContent = lazy(

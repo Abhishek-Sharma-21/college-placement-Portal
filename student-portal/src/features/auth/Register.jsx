@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "@/Routes/studentRout/routes.jsx";
+import { ROUTES } from "@/routes/studentRout/routes.jsx";
 // You will need axios to make the API call
 import axios from "axios";
 

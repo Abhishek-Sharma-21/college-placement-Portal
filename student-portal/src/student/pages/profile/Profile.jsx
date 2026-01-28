@@ -28,14 +28,14 @@ import {
   updateProfileSuccess,
   updateProfileFailure,
 } from "@/store/slices/studentProfileSlice";
-import { ROUTES } from "@/Routes/studentRout/routes";
+import { ROUTES } from "@/routes/studentRout/routes";
 
 const API_URL = "http://localhost:4000/api/profile";
 
 function ProfileCompletionForm() {
   const dispatch = useDispatch();
   const { loading, error, profile } = useSelector(
-    (state) => state.studentProfile
+    (state) => state.studentProfile,
   );
   const { user } = useSelector((state) => state.auth);
   console.log(user);
@@ -337,8 +337,8 @@ function ProfileCompletionForm() {
               {loading
                 ? "Saving..."
                 : profile
-                ? "Update Profile"
-                : "Save Profile"}
+                  ? "Update Profile"
+                  : "Save Profile"}
             </Button>
           </CardFooter>
         </form>
