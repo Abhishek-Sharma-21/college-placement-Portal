@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { TPO_ROUTES } from "@/routes/tpoRout/TpoRoutes";
+import { TPO_ROUTES } from "@/Routes/tpoRout/TpoRoutes.jsx";
 
 const StudentCard = ({ student, onViewDetails }) => (
   <div className="border rounded-lg p-4 flex items-center justify-between">
