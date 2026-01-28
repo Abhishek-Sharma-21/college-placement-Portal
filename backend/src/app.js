@@ -13,11 +13,9 @@ app.use(helmet());
 
 // CORS Configuration
 const allowedOrigins = [
-  "http://localhost:3000", // React default port
-  "http://localhost:5173", // Vite default port
-  "http://localhost:4000", // In case frontend runs on same port
-  "https://college-placement-porrtal.vercel.app", // Note: Your current frontend URL (with typo)
-  "https://college-placement-portal.vercel.app", // In case you fix the typo later
+  "http://localhost:5173",
+  "https://college-placement-porrtal.vercel.app/login", // Match your current Vercel URL
+  "https://college-placement-portal.vercel.app",
 ];
 
 app.use(
