@@ -14,6 +14,7 @@ app.use(helmet());
 // CORS Configuration
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://college-placement-porrtal.vercel.app", // Match your current Vercel URL
   "https://college-placement-porrtal.vercel.app/login", // Match your current Vercel URL
   "https://college-placement-portal.vercel.app",
 ];
