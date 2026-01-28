@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ROUTES } from "@/routes/studentRout/routes.jsx";
+import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 import {
   FaBuilding,
   FaMapMarkerAlt,

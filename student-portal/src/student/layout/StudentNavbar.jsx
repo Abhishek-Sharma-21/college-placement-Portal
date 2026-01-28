@@ -14,7 +14,7 @@ import {
   FaFolderOpen,
   FaClipboardList,
 } from "react-icons/fa";
-import { ROUTES } from "@/routes/studentRout/routes.jsx";
+import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 
 const navItems = [
   { name: "Dashboard", icon: <FaThLarge />, to: ROUTES.DASHBOARD },
