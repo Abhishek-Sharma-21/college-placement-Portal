@@ -1,0 +1,27 @@
+# ============================
+# ROOT-LEVEL SECURITY GITIGNORE
+# ============================
+
+# NEVER commit any .env files from any subfolder
+**/.env
+**/.env.*
+!**/.env.example
+
+# Private keys, SSL certs, credentials
+**/*.pem
+**/*.key
+**/*.cert
+**/*.crt
+**/*.p12
+**/*.pfx
+**/secrets/
+**/credentials.json
+**/service-account*.json
+
+# Node dependencies everywhere
+**/node_modules/
+
+# OS Metadata
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import { logout } from "@/store/slices/authSlice";
 import { clearProfile } from "@/store/slices/studentProfileSlice";
 import {
@@ -37,7 +38,7 @@ export default function StudentNavbar() {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:4000/api/auth/logout",
+        `${API_URL}/auth/logout`,
         {},
         { withCredentials: true },
       );

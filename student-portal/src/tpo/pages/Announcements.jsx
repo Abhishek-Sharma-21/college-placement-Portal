@@ -59,7 +59,7 @@ function TpoAnnouncementsManage() {
   const fetchAssessments = async () => {
     setLoadingAssessments(true);
     try {
-      const res = await axios.get("http://localhost:4000/api/assessments/my", {
+      const res = await axios.get(`${API_URL}/assessments/my`, {
         withCredentials: true,
       });
       setAssessments(res.data || []);

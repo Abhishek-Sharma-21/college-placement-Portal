@@ -1,4 +1,5 @@
 import User, { generateHash, comparePassword } from "../model/auth.model.js";
+
 import jwt from "jsonwebtoken";
 
 // --- Register Controller ---
@@ -99,4 +100,16 @@ export const logout = (req, res) => {
     sameSite: "strict",
   });
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+// --- Get Me Controller ---
+// Requires the `protect` middleware to be applied on the route
+export const getMe = (req, res) => {
+  // req.user is populated by the protect middleware
+  res.status(200).json({
+    _id: req.user._id,
+    fullName: req.user.fullName,
+    email: req.user.email,
+    role: req.user.role,
+  });
 };

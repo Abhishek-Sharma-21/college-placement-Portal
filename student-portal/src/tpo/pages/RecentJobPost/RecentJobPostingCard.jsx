@@ -880,7 +880,7 @@ function RecentJobPostings() {
             const statsPromises = completed.map(async (job) => {
               try {
                 const res = await axios.get(
-                  `http://localhost:4000/api/applications/job/${job._id}`,
+                  `${API_URL}/applications/job/${job._id}`,
                   { withCredentials: true },
                 );
                 const applications = res.data;

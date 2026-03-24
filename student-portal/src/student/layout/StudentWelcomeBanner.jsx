@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { UserCircle } from "lucide-react";
 import { ROUTES } from "@/Routes/studentRout/routes.jsx";
 import axios from "axios";
+import API_URL from "@/lib/api";
 import {
   fetchProfileStart,
   fetchProfileSuccess,
@@ -25,7 +26,7 @@ const StudentWelcomeBanner = () => {
         dispatch(fetchProfileStart());
         try {
           const response = await axios.get(
-            "http://localhost:4000/api/profile/profile",
+            `${API_URL}/profile/profile`,
             {
               withCredentials: true,
             },
