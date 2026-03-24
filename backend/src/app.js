@@ -23,6 +23,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.send("<h1>👋 Hi! This is the backend of College Placement Portal.</h1><p>API is running successfully.</p>");
+});
+
 app.use("/uploads", express.static("uploads"));
 app.use("/api", apiRouter);
 app.use(notFound);
